@@ -98,6 +98,15 @@ def task2_population_growth():
     print(f"Теоретическое E[X({T})] = {theoretical_mean:.1f}")
     print(f"Эмпирическое E[X({T})] = {empirical_mean:.1f}")
 
+    # Логарифмическое изменение
+    log_X_all = np.log(X_all)
+    empirical_log_change = (log_X_all[:, -1] - log_X_all[:, 0]).mean() / T
+    theoretical_log_change = r - 0.5 * sigma ** 2
+
+    print(f"\nИзменение логарифма за единицу времени:")
+    print(f"Теоретическое = {theoretical_log_change:.6f}")
+    print(f"Эмпирическое = {empirical_log_change:.6f}")
+
     # Визуализация с логнормальной зоной
     num_plot_paths = 10
     X_plot_paths = X_all[:num_plot_paths]
@@ -146,8 +155,8 @@ def task3_ito_formula():
         dW = W[i + 1] - W[i]
         S_sde[i + 1] = S_sde[i] * np.exp((mu - 0.5 * sigma ** 2) * dt + sigma * dW)
 
-    print(f"Конечное значение (формула): S({T}) = {S_formula[-1]:.2f}")
-    print(f"Конечное значение (SDE): S({T}) = {S_sde[-1]:.2f}")
+    print(f"Значение с применением формулы Ито: S({T}) = {S_formula[-1]:.2f}")
+    print(f"Реальное значение для этого же случая: S({T}) = {S_sde[-1]:.2f}")
     rel_diff = abs(S_formula[-1] - S_sde[-1]) / S_formula[-1] * 100
     print(f"Относительная разность: {rel_diff:.4f}%")
 
