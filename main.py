@@ -9,7 +9,7 @@ def task1_volatility_log_price():
     sigma = 0.2
     print(f"Исходные параметры:\nсредняя доходность = {mu}\nволатильность цены = {sigma}")
 
-    volatility_log_S = sigma
+    volatility_log_S = sigma # Аналитически найдена
     drift_log_S = mu - 0.5 * sigma ** 2
 
     print(f"\nРезультат применения формулы Ито:\nd[log(S)] = ({drift_log_S:.4f})dt + ({volatility_log_S})dW")
@@ -71,7 +71,7 @@ def task2_population_growth():
     X0 = 1000
 
     def expected_population(t):
-        return X0 * np.exp(r * t)
+        return X0 * np.exp(r * t) # Аналитическо найдено
 
     def expected_logX(t):
         return np.log(X0) + (r - 0.5 * sigma ** 2) * t
@@ -132,6 +132,10 @@ def task2_population_growth():
 
 
 def task3_ito_formula():
+    """
+    По сути тут аналитически должно доказываться через (что и требовалось доказать)
+    Но тут строится график для подверждения
+    """
     print("\nЗадача 3: Применение формулы Ито")
 
     mu = 0.08
@@ -147,7 +151,7 @@ def task3_ito_formula():
     W = np.cumsum(np.random.normal(0, np.sqrt(dt), N))
     W = np.concatenate([[0], W])
 
-    S_formula = S0 * np.exp((mu - 0.5 * sigma ** 2) * t + sigma * W)
+    S_formula = S0 * np.exp((mu - 0.5 * sigma ** 2) * t + sigma * W) # Аналитически
 
     S_sde = np.zeros(N + 1)
     S_sde[0] = S0
@@ -158,7 +162,7 @@ def task3_ito_formula():
     print(f"Значение с применением формулы Ито: S({T}) = {S_formula[-1]:.2f}")
     print(f"Реальное значение для этого же случая: S({T}) = {S_sde[-1]:.2f}")
     rel_diff = abs(S_formula[-1] - S_sde[-1]) / S_formula[-1] * 100
-    print(f"Относительная разность: {rel_diff:.4f}%")
+    print(f"Относительная разность: {rel_diff:.4f}%") # Должно получится 0 или мало отклонение
 
     plt.figure(figsize=(8, 5))
     plt.plot(t, S_formula, label="S по формуле")
@@ -180,7 +184,7 @@ def task4_inflation_expectation():
     I0 = 0.03
 
     def expected_inflation(t):
-        return I0 * np.exp(mu * t)
+        return I0 * np.exp(mu * t) # Аналитический расчёт мат ожидания инфляции
 
     def expected_logI(t):
         return np.log(I0) + (mu - 0.5 * sigma ** 2) * t
@@ -210,7 +214,7 @@ def task4_inflation_expectation():
     empirical_mean_inflation = I_all[:, -1].mean()
     theoretical_mean_inflation = expected_inflation(T)
     empirical_log_change = (log_I_all[:, -1] - log_I_all[:, 0]).mean() / T
-    theoretical_log_change = mu - 0.5 * sigma ** 2
+    theoretical_log_change = mu - 0.5 * sigma ** 2 # Формула ещё из первого задания, но тоже аналитически
 
     print(f"После {T} лет:")
     print(f"Теоретическое E[I({T})] = {theoretical_mean_inflation:.6f}")
